@@ -58,7 +58,6 @@ class CommonInfo:
         if a['status'] != 'OK':
             return -1
         for i in a['result']['problems']:
-            if i['name'] == name or str(i['contestId']) + str(i['index']) == name:
+            if name in i['name'] or name in (str(i['contestId']) + str(i['index'])):
                 return "https://codeforces.com/problemset/problem/" + str(i['contestId']) + "/" + str(i['index'])
         return "there is no such link"
-            

@@ -1,4 +1,5 @@
 import requests
+import pprint
 
 url = "http://codeforces.com/api/"
 
@@ -12,10 +13,8 @@ class ContestInfo:
     # Returning id of contest with the name
 
     def find_contest(self, name):
-        map_params = {
-            'gym': 'false'
-        }
-        a = requests.get(url + 'contest.list', params=map_params).json()
+        a = requests.get(url + 'contest.list').json()
+        print(name)
         if a['status'] != 'OK':
             return -1
         for i in a['result']:

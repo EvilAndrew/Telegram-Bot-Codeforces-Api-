@@ -1,7 +1,5 @@
 import telebot
-import pprint
 import requests
-import urllib
 import time
 
 from telebot.types import Message
@@ -45,7 +43,7 @@ def start_conversation(message: Message):
     
     answer += "/max_rank_of \tif you want to know maximum rank of the user\n\n"
     answer += "/place_in_contest \tif you want to know exact place of the user in the contest\n\n"
-    
+
     answer += "/is_solved \tif you want to know whether some user solved exact problem (type problem handle)\n\n"
     answer += "/how_many_friends \tif you want to know exact number of people whose friend the user is\n\n"
     
@@ -63,7 +61,7 @@ def start_conversation(message: Message):
 
     answer += "/number_of_problems_with_tag \tif you want to know how many problems are there in total with the tag\n\n"
     answer += "/contest_link \tif you want to know link to the contest by its title\n\n"
-    
+
     answer += "/profile_link \tif you want to know link to the profile by its handle\n\n"
     answer += "/problem_link \tif you want to know link to the problem by its title\n\n"
 
@@ -77,7 +75,7 @@ def start_conversation(message: Message):
 @bot.message_handler(commands=['profile_link'])
 def link_by_handle(message: Message):
     a = ' '.join(message.text.split()[1:]).rstrip(' ').rstrip('\n')
-    answer = user_info.link_to_user(a.lower())
+    answer = user_info.link_to_user(a)
     bot.reply_to(message, str(answer))
 
 
@@ -86,7 +84,7 @@ def link_by_handle(message: Message):
 @bot.message_handler(commands=['problem_link'])
 def link_to_problem(message: Message):
     a = ' '.join(message.text.split()[1:]).rstrip(' ').rstrip('\n')
-    answer = common_info.link_to_problem(a.lower())
+    answer = common_info.link_to_problem(a)
     bot.reply_to(message, str(answer))
 
 # The same, but with contest
@@ -94,7 +92,7 @@ def link_to_problem(message: Message):
 @bot.message_handler(commands=['contest_link'])
 def link_to_contest(message: Message):
     a = ' '.join(message.text.split()[1:]).rstrip(' ').rstrip('\n')
-    answer = contest_info.link_to_contest(a.lower())
+    answer = contest_info.link_to_contest(a)
     bot.reply_to(message, str(answer))
 
 
@@ -103,7 +101,7 @@ def link_to_contest(message: Message):
 @bot.message_handler(commands=['find_user'])
 def find_user(message: Message):
     a = ' '.join(message.text.split()[1:]).rstrip(' ').rstrip('\n')
-    answer = user_info.find_handle(a.lower())
+    answer = user_info.find_handle(a)
     
     if answer[0] == -1:
         bot.reply_to(message, str(answer[0]))
@@ -117,7 +115,7 @@ def find_user(message: Message):
 @bot.message_handler(commands=['find_contest'])
 def find_contest(message: Message):
     a = ' '.join(message.text.split()[1:]).rstrip(' ').rstrip('\n')
-    answer = user_info.find_contest(a.lower())
+    answer = contest_info.find_contest(a)
     bot.reply_to(message, answer)
 
 
@@ -126,7 +124,7 @@ def find_contest(message: Message):
 @bot.message_handler(commands=['rating_of'])
 def get_rating(message: Message):
     a = ' '.join(message.text.split()[1:]).rstrip(' ').rstrip('\n')
-    answer = user_info.find_handle(a.lower())
+    answer = user_info.find_handle(a)
     bot.reply_to(message, str(answer[0]))
 
 
@@ -135,7 +133,7 @@ def get_rating(message: Message):
 @bot.message_handler(commands=['max_rating_of'])
 def get_max_rate(message: Message):
     a = ' '.join(message.text.split()[1:]).rstrip(' ').rstrip('\n')
-    answer = user_info.max_rating_of_user(a.lower())
+    answer = user_info.max_rating_of_user(a)
     bot.reply_to(message, str(answer))
 
 
@@ -144,7 +142,7 @@ def get_max_rate(message: Message):
 @bot.message_handler(commands=['max_rank_of'])
 def get_max_rank(message: Message):
     a = ' '.join(message.text.split()[1:]).rstrip(' ').rstrip('\n')
-    answer = user_info.max_rank_of_user(a.lower())
+    answer = user_info.max_rank_of_user(a)
     bot.reply_to(message, str(answer))
 
 
@@ -153,7 +151,7 @@ def get_max_rank(message: Message):
 @bot.message_handler(commands=['rank_of', 'current_rank_of'])
 def get_rank(message: Message):
     a = ' '.join(message.text.split()[1:]).rstrip(' ').rstrip('\n')
-    answer = user_info.get_rank(a.lower())
+    answer = user_info.get_rank(a)
     bot.reply_to(message, str(answer))
 
 
@@ -163,7 +161,7 @@ def get_rank(message: Message):
 def get_place_in_contests(message: Message):
     contest = ' '.join(message.text.split()[1:-1]).rstrip(' ').rstrip('\n')
     handle = message.text.split()[-1].rstrip(' ').rstrip('\n')
-    answer = user_info.place_in_contest(contest.lower(), handle.lower())
+    answer = user_info.place_in_contest(contest, handle)
     bot.reply_to(message, str(answer))
 
 
@@ -173,7 +171,7 @@ def get_place_in_contests(message: Message):
 def get_solved(message: Message):
     problem = ' '.join(message.text.split()[1:-1]).rstrip(' ').rstrip('\n')
     handle = message.text.split()[-1].rstrip(' ').rstrip('\n')
-    answer = user_info.is_solved(handle.lower(), problem.lower())
+    answer = user_info.is_solved(handle, problem)
     bot.reply_to(message, str(answer))
 
 
@@ -182,7 +180,7 @@ def get_solved(message: Message):
 @bot.message_handler(commands=['how_many_friends'])
 def how_many_friends(message: Message):
     a = ' '.join(message.text.split()[1:]).rstrip(' ').rstrip('\n')
-    answer = user_info.how_many_friend(a.lower())
+    answer = user_info.how_many_friend(a)
     bot.reply_to(message, str(answer))
 
 
@@ -191,7 +189,7 @@ def how_many_friends(message: Message):
 @bot.message_handler(commands=['color_of', 'colour_of'])
 def get_color_of(message: Message):
     a = ' '.join(message.text.split()[1:]).rstrip(' ').rstrip('\n')
-    answer = user_info.what_color_is_user(a.lower())
+    answer = user_info.what_color_is_user(a)
     bot.reply_to(message, str(answer))
 
 
@@ -200,7 +198,7 @@ def get_color_of(message: Message):
 @bot.message_handler(commands=['color_of_number', 'colour_of_number'])
 def get_color_of_number(message: Message):
     a = ' '.join(message.text.split()[1:]).rstrip(' ').rstrip('\n')
-    answer = common_info.what_color_is_number(a.lower())
+    answer = common_info.what_color_is_number(a)
     bot.reply_to(message, str(answer))
 
 
@@ -217,7 +215,7 @@ def problems_at_all(message: Message):
 @bot.message_handler(commands=['problems_with_tag', 'number_of_problems_with_tag'])
 def problems_at_all(message: Message):
     a = ' '.join(message.text.split()[1:]).rstrip(' ').rstrip('\n')
-    answer = common_info.how_many_problems_at_all(a.lower())
+    answer = common_info.how_many_problems_at_all(a)
     bot.reply_to(message, str(answer))
 
 

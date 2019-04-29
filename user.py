@@ -62,7 +62,7 @@ class UserInfo:
 
     def how_many_friend(self, handle):
         map_params = {
-            'handles': handle
+            'handle': handle
         }
         a = requests.get(url + 'user.info', params=map_params).json()
         if a['status'] != 'OK':
@@ -107,9 +107,12 @@ class UserInfo:
         if a['status'] != 'OK':
             return 'error'
         for i in a['result']: 
-            if str(i['problem']['contestId']) + str(i['problem']['index']) == problem or i['problem']['name'] == problem:
-                if i['verdict'] == 'OK':
-                    return 'solved'
+            try:
+                if str(i['problem']['contestId']) + str(i['problem']['index']) == problem or i['problem']['name'] == problem:
+                    if i['verdict'] == 'OK':
+                        return 'solved'
+            except:
+                pass
         return 'not solved'
 
     
